@@ -9,3 +9,12 @@
             \C {\A \C, \B \D, \C \A, \D \B}
             \D {\A \D, \B \A, \C \B, \D \C}}
            (encryption-table "ABCD")))))
+
+(deftest test-decryption-table
+  (testing "Short alphabet"
+    (is (= {\A {\A \A, \B \B, \C \C, \D \D},
+            \B {\A \D, \B \A, \C \B, \D \C},
+            \C {\A \C, \B \D, \C \A, \D \B},
+            \D {\A \B, \B \C, \C \D, \D \A}},
+           (decryption-table "ABCD")))))
+
