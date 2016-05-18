@@ -15,7 +15,9 @@
       [alphabet (-> request :body :alphabet)
        key (-> request :body :key)
        plaintext (-> request :body :plaintext)]
-      (response (encrypt-decrypt (encryption-table alphabet) key plaintext))))
+      (response
+        {:cyphertext
+         (encrypt-decrypt (encryption-table alphabet) key plaintext)})))
   (route/not-found (response {:message "Page not found"})))
 
 (defn wrap-exception-handling [handler]
