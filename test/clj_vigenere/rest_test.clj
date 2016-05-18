@@ -26,4 +26,26 @@
                                :alphabet "alphabettouse"
                                :plaintext "plaintexttouse"})))]
         (is (= 200 (:status response)))
-        (is (= "cyphertext" (-> response :body :cyphertext)))))))
+        (is (= "cyphertext" (-> response :body :cyphertext))))))
+  (testing "decrypt"
+    (with-redefs
+      [decryption-table
+        (fn [alphabet]
+          (is (= "alphabettouse" alphabet))
+          :decryptiontable)
+       encrypt-decrypt
+        (fn [table key text]
+          (is (= :decryptiontable table))
+          (is (= "keytouse" key))
+          (is (= "cyphertexttouse" text))
+          "plaintext")]
+    (let [response (app-routes
+                      (-> (request :post "/decrypt")
+                          (content-type "application/json")
+                          (assoc
+                            :body
+                            {:key "keytouse"
+                             :alphabet "alphabettouse"
+                             :cyphertext "cyphertexttouse"})))]
+      (is (= 200 (:status response)))
+      (is (= "plaintext" (-> response :body :plaintext)))))))

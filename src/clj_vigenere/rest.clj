@@ -18,6 +18,14 @@
       (response
         {:cyphertext
          (encrypt-decrypt (encryption-table alphabet) key plaintext)})))
+  (POST "/decrypt" request
+    (let
+      [alphabet (-> request :body :alphabet)
+       key (-> request :body :key)
+       plaintext (-> request :body :cyphertext)]
+      (response
+        {:plaintext
+         (encrypt-decrypt (decryption-table alphabet) key plaintext)})))
   (route/not-found (response {:message "Page not found"})))
 
 (defn wrap-exception-handling [handler]
