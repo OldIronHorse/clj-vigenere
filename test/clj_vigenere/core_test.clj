@@ -18,3 +18,21 @@
             \D {\A \B, \B \C, \C \D, \D \A}},
            (decryption-table "ABCD")))))
 
+(deftest test-encrypt-decrypt
+  (testing "encrypt, all characters in alphabet"
+    (is (=
+      "poesadr"
+      (encrypt-decrypt
+        (encryption-table "abcdefghijklmnopqrstuvwxyz")
+        "donut" "maryhad"))))
+  (testing "decrypt, all characters in alphabet"
+    (is (=
+      "maryhad",
+      (encrypt-decrypt
+        (decryption-table "abcdefghijklmnopqrstuvwxyz")
+        "donut" "poesadr"))))
+  (testing "encrypt, non-alphabet character"
+    (is (thrown? IllegalArgumentException
+      (encrypt-decrypt
+        (encryption-table "abcdefghijklmnopqrstuvwxyz")
+        "donut" "mary had")))))
